@@ -29,28 +29,38 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             const formMessage = document.getElementById('formMessage');
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
             
-            // Basic validation
-            if (name && email && subject && message) {
-                // Simulate form submission (in a real application, this would send to a server)
-                formMessage.className = 'form-message success';
-                formMessage.textContent = 'Thank you for your message! We will get back to you soon.';
-                
-                // Reset form
-                contactForm.reset();
-                
-                // Hide message after 5 seconds
-                setTimeout(() => {
-                    formMessage.style.display = 'none';
-                }, 5000);
-            } else {
+            // Email validation regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            // Validation
+            if (!name || !email || !subject || !message) {
                 formMessage.className = 'form-message error';
                 formMessage.textContent = 'Please fill in all required fields.';
+                return;
             }
+            
+            if (!emailRegex.test(email)) {
+                formMessage.className = 'form-message error';
+                formMessage.textContent = 'Please enter a valid email address.';
+                return;
+            }
+            
+            // Simulate form submission (in a real application, this would send to a server)
+            formMessage.className = 'form-message success';
+            formMessage.textContent = 'Thank you for your message! We will get back to you soon.';
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                formMessage.className = 'form-message';
+            }, 5000);
         });
     }
 
